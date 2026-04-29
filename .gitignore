@@ -1,0 +1,36 @@
+.DS_Store
+
+# env / secrets
+.env
+.env.*
+!.env.example
+
+# Node / frontend
+node_modules/
+dist/
+dist-ssr/
+.vite/
+.next/
+out/
+coverage/
+*.tsbuildinfo
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+
+# Tauri / Rust
+src-tauri/target/
+
+# Xcode / Swift build output
+DerivedData/
+build/
+*.xcresult
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+
+# local app runtime data
+.honeycrisp/
+.od/
+logs/
+*.log
