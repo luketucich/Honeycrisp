@@ -11,12 +11,28 @@
 }
 
 .conversation {
+  display: grid;
+  align-content: start;
   padding: 16px;
   overflow: auto;
 }
 
 .message {
+  max-width: 240px;
   margin-bottom: 8px;
+}
+
+.message-label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 12px;
+}
+
+.message-bubble {
+  margin: 0;
+  padding: 8px 10px;
+  border: 1px solid currentColor;
+  border-radius: 10px;
 }
 
 .composer {
@@ -33,4 +49,19 @@
 
 .workspace {
   padding: 16px;
+}
+
+.message.user {
+  justify-self: end;
+  text-align: right;
+}
+
+.message.agent {
+  justify-self: start;
+}
+
+.typing-dots {
+  min-width: 24px;
+  text-align: center;
+  letter-spacing: 2px;
 }
