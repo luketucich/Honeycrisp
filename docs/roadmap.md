@@ -4,7 +4,7 @@ Last updated: Saturday, May 2, 2026
 
 ## Current Status
 
-Honeycrisp is in the architecture and planning phase. The initial documentation is complete, including the architecture plan, Open Design analysis, and project README.
+Honeycrisp is in the early app scaffold phase. The initial documentation is complete, the Tauri desktop shell is running, and the first prompt composer interaction has been added.
 
 ## Phase 0: Planning
 
@@ -17,8 +17,9 @@ Honeycrisp is in the architecture and planning phase. The initial documentation 
 
 ## Phase 1: App Scaffold
 
-- [ ] Scaffold Tauri + React + TypeScript app
-- [ ] Add basic desktop shell
+- [x] Scaffold Tauri + React + TypeScript app
+- [x] Add basic desktop shell
+- [x] Add first prompt composer interaction
 - [ ] Add project layout and navigation
 - [ ] Add local app settings
 
