@@ -28,13 +28,13 @@ The product can be monetized later as a polished signed Mac app, open-core produ
 
 The planned stack keeps the app practical while still making the project resume-worthy.
 
-| Layer | Technology | Purpose |
-|---|---|---|
-| Mac app container | Tauri | Packages the app as a lightweight native Mac desktop app |
-| User interface | React + TypeScript | Builds the prompt UI, project browser, previews, forms, and settings |
-| Local backend | Node.js + TypeScript | Runs the agent loop, manages files, talks to AI providers, and launches Xcode validation |
-| Native output | Swift + SwiftUI | The generated code users actually want |
-| Validation | Xcode command line tools + Simulator | Builds generated SwiftUI and captures verified previews |
+| Layer             | Technology                           | Purpose                                                                                  |
+| ----------------- | ------------------------------------ | ---------------------------------------------------------------------------------------- |
+| Mac app container | Tauri                                | Packages the app as a lightweight native Mac desktop app                                 |
+| User interface    | React + TypeScript                   | Builds the prompt UI, project browser, previews, forms, and settings                     |
+| Local backend     | Node.js + TypeScript                 | Runs the agent loop, manages files, talks to AI providers, and launches Xcode validation |
+| Native output     | Swift + SwiftUI                      | The generated code users actually want                                                   |
+| Validation        | Xcode command line tools + Simulator | Builds generated SwiftUI and captures verified previews                                  |
 
 Rust stays mostly inside Tauri unless the app later needs deeper native integrations. The main product logic should live in TypeScript so the system is easier to iterate on.
 
@@ -147,15 +147,15 @@ This is the part that prevents generic output. The app should not rely on one gi
 
 Open Design skills should become Honeycrisp SwiftUI skills over time.
 
-| Open Design concept | Honeycrisp equivalent |
-|---|---|
-| `SKILL.md` | `SKILL.md` with SwiftUI-specific workflow |
-| `assets/template.html` | SwiftUI seed files and preview host templates |
-| `references/layouts.md` | SwiftUI screen archetypes |
-| `references/checklist.md` | Native iOS quality checklist |
-| CSS `:root` variables | Swift theme tokens |
-| `<artifact type="text/html">` | `GeneratedUIManifest.json` + Swift files |
-| iframe preview | Xcode build + Simulator screenshot |
+| Open Design concept           | Honeycrisp equivalent                         |
+| ----------------------------- | --------------------------------------------- |
+| `SKILL.md`                    | `SKILL.md` with SwiftUI-specific workflow     |
+| `assets/template.html`        | SwiftUI seed files and preview host templates |
+| `references/layouts.md`       | SwiftUI screen archetypes                     |
+| `references/checklist.md`     | Native iOS quality checklist                  |
+| CSS `:root` variables         | Swift theme tokens                            |
+| `<artifact type="text/html">` | `GeneratedUIManifest.json` + Swift files      |
+| iframe preview                | Xcode build + Simulator screenshot            |
 
 For example, Open Design's mobile app skill should not be copied directly into Honeycrisp. Its workflow is excellent, but its instructions are HTML-specific. The Honeycrisp version should preserve the idea of a high-quality mobile screen skill while replacing the output format:
 
