@@ -1,36 +1,24 @@
-.DS_Store
-
-# env / secrets
-.env
-.env.*
-!.env.example
-
-# Node / frontend
-node_modules/
-dist/
-dist-ssr/
-.vite/
-.next/
-out/
-coverage/
-*.tsbuildinfo
-npm-debug.log*
-pnpm-debug.log*
-yarn-debug.log*
-
-# Tauri / Rust
-src-tauri/target/
-
-# Xcode / Swift build output
-DerivedData/
-build/
-*.xcresult
-*.xcuserstate
-*.xcworkspace/xcuserdata/
-*.xcodeproj/xcuserdata/
-
-# local app runtime data
-.honeycrisp/
-.od/
-logs/
+# Logs
+logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
