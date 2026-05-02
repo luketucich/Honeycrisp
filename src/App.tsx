@@ -15,19 +15,26 @@ function App() {
   }
 
   return (
-    <main>
-      <h1>Honeycrisp</h1>
-      <p>Generate native SwiftUI interfaces from prompts.</p>
+    <main className="app-shell">
+      <aside className="chat-rail">
+        <section className="conversation">
+          {messages.map((message, index) => (
+            <div className="message" key={index}>
+              <strong>You said:</strong> {message}
+            </div>
+          ))}
+        </section>
 
-      <form action={sendPrompt}>
-        <textarea name="prompt" placeholder="Describe an iOS screen..." />
-        <button type="submit">Send</button>
-      </form>
+        <form action={sendPrompt} className="composer">
+          <textarea name="prompt" placeholder="Describe an iOS screen..." />
+          <button type="submit">Send</button>
+        </form>
+      </aside>
 
-      <section>
-        {messages.map((message, index) => (
-          <p key={index}>{message}</p>
-        ))}
+      <section className="workspace">
+        <header className="workspace-header">
+          <h1>Honeycrisp</h1>
+        </header>
       </section>
     </main>
   );
