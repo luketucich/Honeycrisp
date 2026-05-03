@@ -3,12 +3,48 @@ import "./App.css";
 
 type Message = {
   id: string;
-  role: "user" | "agent";
+  kind: "user" | "agent" | "status" | "tool";
   content: string;
 };
 
-const THINKING_DELAY_MS = 1200;
-const TEMPORARY_AGENT_REPLY = "Got it. I'll turn this into a SwiftUI screen.";
+const FAKE_AGENT_EVENTS: Array<{
+  delay: number;
+  kind: Message["kind"];
+  content: string;
+}> = [
+  {
+    delay: 500,
+    kind: "status",
+    content: "Reading prompt...",
+  },
+  {
+    delay: 1100,
+    kind: "agent",
+    content: "I'll turn this into a SwiftUI screen.",
+  },
+  {
+    delay: 1700,
+    kind: "tool",
+    content: "Generated ContentView.swift",
+  },
+  {
+    delay: 2300,
+    kind: "status",
+    content: "Preparing preview...",
+  },
+  {
+    delay: 2900,
+    kind: "agent",
+    content: "Done. The first version is ready.",
+  },
+];
+
+const MESSAGE_LABELS: Record<Message["kind"], string> = {
+  user: "You",
+  agent: "Agent",
+  status: "Status",
+  tool: "Tool",
+};
 
 function App() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -23,7 +59,7 @@ function App() {
 
     const userMessage: Message = {
       id: crypto.randomUUID(),
-      role: "user",
+      kind: "user",
       content,
     };
 
@@ -31,16 +67,21 @@ function App() {
 
     setIsThinking(true);
 
-    setTimeout(() => {
-      const agentMessage: Message = {
-        id: crypto.randomUUID(),
-        role: "agent",
-        content: TEMPORARY_AGENT_REPLY,
-      };
+    FAKE_AGENT_EVENTS.forEach((event, index) => {
+      setTimeout(() => {
+        const message: Message = {
+          id: crypto.randomUUID(),
+          kind: event.kind,
+          content: event.content,
+        };
 
-      setMessages((messages) => [...messages, agentMessage]);
-      setIsThinking(false);
-    }, THINKING_DELAY_MS);
+        setMessages((messages) => [...messages, message]);
+
+        if (index === FAKE_AGENT_EVENTS.length - 1) {
+          setIsThinking(false);
+        }
+      }, event.delay);
+    });
   }
 
   return (
@@ -51,11 +92,11 @@ function App() {
             <p className="empty-state">Describe an iOS screen to start</p>
           ) : (
             messages.map((message) => {
-              const label = message.role === "user" ? "You" : "Agent";
-
               return (
-                <div className={`message ${message.role}`} key={message.id}>
-                  <span className="message-label">{label}</span>
+                <div className={`message ${message.kind}`} key={message.id}>
+                  <span className="message-label">
+                    {MESSAGE_LABELS[message.kind]}
+                  </span>
                   <p className="message-bubble">{message.content}</p>
                 </div>
               );

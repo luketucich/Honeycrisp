@@ -56,8 +56,19 @@
   text-align: right;
 }
 
-.message.agent {
+.message.agent,
+.message.status,
+.message.tool {
   justify-self: start;
+}
+
+.message.status .message-bubble {
+  opacity: 0.75;
+  border-style: dashed;
+}
+
+.message.tool .message-bubble {
+  font-family: monospace;
 }
 
 .typing-dots {
