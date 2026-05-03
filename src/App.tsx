@@ -1,43 +1,12 @@
 import { useState } from "react";
 import "./App.css";
+import { runAgent, type AgentEvent } from "./lib/agentClient";
 
 type Message = {
   id: string;
-  kind: "user" | "agent" | "status" | "tool";
+  kind: "user" | AgentEvent["kind"];
   content: string;
 };
-
-const FAKE_AGENT_EVENTS: Array<{
-  delay: number;
-  kind: Message["kind"];
-  content: string;
-}> = [
-  {
-    delay: 500,
-    kind: "status",
-    content: "Reading prompt...",
-  },
-  {
-    delay: 1100,
-    kind: "agent",
-    content: "I'll turn this into a SwiftUI screen.",
-  },
-  {
-    delay: 1700,
-    kind: "tool",
-    content: "Generated ContentView.swift",
-  },
-  {
-    delay: 2300,
-    kind: "status",
-    content: "Preparing preview...",
-  },
-  {
-    delay: 2900,
-    kind: "agent",
-    content: "Done. The first version is ready.",
-  },
-];
 
 const MESSAGE_LABELS: Record<Message["kind"], string> = {
   user: "You",
@@ -46,42 +15,44 @@ const MESSAGE_LABELS: Record<Message["kind"], string> = {
   tool: "Tool",
 };
 
+function createMessage(kind: Message["kind"], content: string): Message {
+  return {
+    id: crypto.randomUUID(),
+    kind,
+    content,
+  };
+}
+
 function App() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isThinking, setIsThinking] = useState(false);
 
-  function sendPrompt(formData: FormData) {
+  async function sendPrompt(formData: FormData) {
     const content = String(formData.get("prompt") ?? "").trim();
 
     if (!content) {
       return;
     }
 
-    const userMessage: Message = {
-      id: crypto.randomUUID(),
-      kind: "user",
-      content,
-    };
-
-    setMessages((messages) => [...messages, userMessage]);
+    setMessages((messages) => [...messages, createMessage("user", content)]);
 
     setIsThinking(true);
 
-    FAKE_AGENT_EVENTS.forEach((event, index) => {
-      setTimeout(() => {
-        const message: Message = {
-          id: crypto.randomUUID(),
-          kind: event.kind,
-          content: event.content,
-        };
+    try {
+      const agentEvents = await runAgent(content);
+      const agentMessages = agentEvents.map((event) =>
+        createMessage(event.kind, event.content),
+      );
 
-        setMessages((messages) => [...messages, message]);
-
-        if (index === FAKE_AGENT_EVENTS.length - 1) {
-          setIsThinking(false);
-        }
-      }, event.delay);
-    });
+      setMessages((messages) => [...messages, ...agentMessages]);
+    } catch {
+      setMessages((messages) => [
+        ...messages,
+        createMessage("agent", "I could not reach the Tauri agent bridge."),
+      ]);
+    } finally {
+      setIsThinking(false);
+    }
   }
 
   return (
@@ -91,16 +62,14 @@ function App() {
           {messages.length === 0 ? (
             <p className="empty-state">Describe an iOS screen to start</p>
           ) : (
-            messages.map((message) => {
-              return (
-                <div className={`message ${message.kind}`} key={message.id}>
-                  <span className="message-label">
-                    {MESSAGE_LABELS[message.kind]}
-                  </span>
-                  <p className="message-bubble">{message.content}</p>
-                </div>
-              );
-            })
+            messages.map((message) => (
+              <div className={`message ${message.kind}`} key={message.id}>
+                <span className="message-label">
+                  {MESSAGE_LABELS[message.kind]}
+                </span>
+                <p className="message-bubble">{message.content}</p>
+              </div>
+            ))
           )}
           {isThinking ? (
             <div className="message agent">

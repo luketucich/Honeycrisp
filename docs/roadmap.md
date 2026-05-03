@@ -1,10 +1,10 @@
 # Roadmap
 
-Last updated: Saturday, May 2, 2026
+Last updated: Sunday, May 3, 2026
 
 ## Current Status
 
-Honeycrisp is in the early app scaffold phase. The initial documentation is complete, the Tauri desktop shell is running, and the first prompt composer interaction has been added.
+Honeycrisp is in the early app scaffold phase. The initial documentation is complete, the Tauri desktop shell is running, the chat rail has typed agent/status/tool messages, and React can call a small Tauri command that returns fake agent events.
 
 ## Phase 0: Planning
 
@@ -20,14 +20,16 @@ Honeycrisp is in the early app scaffold phase. The initial documentation is comp
 - [x] Scaffold Tauri + React + TypeScript app
 - [x] Add basic desktop shell
 - [x] Add first prompt composer interaction
+- [x] Add chat rail message states
 - [ ] Add project layout and navigation
 - [ ] Add local app settings
 
 ## Phase 2: Local Agent Runtime
 
+- [x] Add Tauri agent bridge
 - [ ] Add Node/TypeScript backend
+- [ ] Forward Tauri command to Node backend
 - [ ] Add local project workspace
-- [ ] Add prompt composer
 - [ ] Add basic agent execution flow
 
 ## Phase 3: SwiftUI Generation
