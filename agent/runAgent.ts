@@ -1,28 +1,6 @@
 import { runClaudeCli } from "./engines/claudeCodeCli.js";
-
-export type AgentEvent = {
-  kind: "agent" | "status" | "tool";
-  content: string;
-};
-
-// Minimal subset of Claude Code's stream-json shape that Honeycrisp uses today.
-type ClaudeContentBlock = {
-  type?: string;
-  text?: string;
-  name?: string;
-  is_error?: boolean;
-};
-
-type ClaudeRawEvent = {
-  type?: string;
-  subtype?: string;
-  model?: string;
-  message?: {
-    content?: ClaudeContentBlock[];
-  };
-  is_error?: boolean;
-  duration_ms?: number;
-};
+import type { AgentEvent } from "../types/agent.js";
+import type { ClaudeContentBlock, ClaudeRawEvent } from "../types/claude.js";
 
 // Runs the selected agent backend and translates its output into Honeycrisp events.
 export async function* runAgent(prompt: string): AsyncGenerator<AgentEvent> {

@@ -1,9 +1,7 @@
 import { invoke } from "@tauri-apps/api/core";
+import type { AgentEvent } from "../../types/agent";
 
-export type AgentEvent = {
-  kind: "agent" | "status" | "tool";
-  content: string;
-};
+export type { AgentEvent };
 
 export async function runAgent(prompt: string) {
   return invoke<AgentEvent[]>("run_agent", { prompt });
