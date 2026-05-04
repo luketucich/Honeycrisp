@@ -11,6 +11,7 @@ export async function* runAgent(prompt: string): AsyncGenerator<AgentEvent> {
   }
 
   const claudeProcess = runClaudeCli(cleanPrompt);
+  const exitPromise = waitForExit(claudeProcess);
 
   claudeProcess.stderr.on("data", (chunk) => {
     console.error(chunk.toString());
@@ -20,6 +21,12 @@ export async function* runAgent(prompt: string): AsyncGenerator<AgentEvent> {
     for (const event of parseClaudeLine(line)) {
       yield event;
     }
+  }
+
+  const exitCode = await exitPromise;
+
+  if (exitCode !== 0) {
+    throw new Error(`Claude Code exited with code ${exitCode}.`);
   }
 }
 
@@ -122,4 +129,13 @@ function formatCompletionStatus(durationMs?: number): string {
   }
 
   return `Claude Code completed in ${(durationMs / 1000).toFixed(1)}s.`;
+}
+
+function waitForExit(process: ReturnType<typeof runClaudeCli>): Promise<number> {
+  return new Promise((resolve, reject) => {
+    process.once("error", reject);
+    process.once("close", (code) => {
+      resolve(code ?? 0);
+    });
+  });
 }

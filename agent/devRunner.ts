@@ -23,4 +23,9 @@ async function main() {
   }
 }
 
-await main();
+try {
+  await main();
+} catch (error) {
+  console.error(error instanceof Error ? error.message : String(error));
+  process.exit(1);
+}
