@@ -4,9 +4,9 @@ Last updated: Monday, May 4, 2026
 
 ## Current Status
 
-Honeycrisp is in the early local-agent phase. The Tauri desktop shell is running, the chat rail has typed agent/status/tool messages, and React can call a small Tauri command that forwards through Node/TypeScript and returns fake agent events.
+Honeycrisp is in the early local-agent phase. The Tauri desktop shell is running, the app has a polished dark Mac-style UI shell, a resizable chat rail, a canvas workspace, and typed agent/status/tool messages.
 
-The next backend target is Claude Code CLI first. Honeycrisp should detect the user's installed `claude` command, run it inside a local project workspace, parse its `stream-json` output, and translate that into Honeycrisp UI events.
+React can call Tauri, Tauri can forward a prompt to Node/TypeScript, and Node can run Claude Code CLI in `stream-json` mode. The current limitation is that React still receives the agent events after the run completes instead of receiving them live as Claude produces them.
 
 ## Phase 0: Planning
 
@@ -23,20 +23,24 @@ The next backend target is Claude Code CLI first. Honeycrisp should detect the u
 - [x] Add basic desktop shell
 - [x] Add first prompt composer interaction
 - [x] Add chat rail message states
-- [ ] Add project layout and navigation
+- [x] Add polished desktop app shell with Tailwind, shadcn/ui, Motion, and Lucide
+- [x] Add resizable chat rail and canvas workspace
 - [ ] Add local app settings
+- [ ] Add project layout and navigation
 
 ## Phase 2: Local Agent Runtime
 
 - [x] Add Tauri agent bridge
 - [x] Add minimal Node/TypeScript agent runner
 - [x] Forward Tauri command to Node runner
-- [ ] Detect local Claude Code CLI
-- [ ] Add Claude Code CLI engine
-- [ ] Parse Claude Code `stream-json` events
+- [x] Detect local Claude Code CLI
+- [x] Add Claude Code CLI engine
+- [x] Parse Claude Code `stream-json` events
+- [x] Map Claude events into Honeycrisp `agent`, `status`, and `tool` events
+- [x] Add first real prompt composer path through Claude Code CLI
 - [ ] Stream agent events live to React
+- [ ] Keep a persistent agent session instead of starting fresh each prompt
 - [ ] Add local project workspace
-- [ ] Add first real prompt composer
 
 ## Phase 3: SwiftUI Generation
 

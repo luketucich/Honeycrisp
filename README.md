@@ -26,11 +26,15 @@ prompt -> Claude Code CLI -> SwiftUI files -> Xcode validation -> screenshot pre
 As of Monday, May 4, 2026:
 
 - Tauri + React + TypeScript scaffold is running
+- The UI has been rebuilt with Tailwind, shadcn/ui, Motion, Lucide, and a canvas workspace
 - Chat rail supports user, agent, status, and tool-style messages
+- The sidebar is resizable and the workspace uses zoom/pan canvas controls
 - React can call Tauri
-- Tauri can forward a prompt to a small Node/TypeScript runner
-- The current agent events are fake placeholders
-- The next milestone is replacing the fake runner with Claude Code CLI
+- Tauri can forward a prompt to a Node/TypeScript runner
+- Node can detect and run Claude Code CLI
+- Claude `stream-json` output is parsed into Honeycrisp events
+- The current limitation is that the UI still receives events after Claude finishes
+- The next milestone is live streaming from Claude back into React
 
 ## Docs
 
