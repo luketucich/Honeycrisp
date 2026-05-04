@@ -1,4 +1,7 @@
-#[derive(serde::Serialize)]
+use std::path::Path;
+use std::process::Command;
+
+#[derive(serde::Deserialize, serde::Serialize)]
 struct AgentEvent {
     kind: String,
     content: String,
@@ -6,20 +9,31 @@ struct AgentEvent {
 
 #[tauri::command]
 async fn run_agent(prompt: String) -> Result<Vec<AgentEvent>, String> {
-    Ok(vec![
-        AgentEvent {
-            kind: "status".into(),
-            content: format!("Received prompt: {}", prompt),
-        },
-        AgentEvent {
-            kind: "tool".into(),
-            content: "Generated ContentView.swift".into(),
-        },
-        AgentEvent {
-            kind: "agent".into(),
-            content: "Done. The first version is ready.".into(),
-        },
-    ])
+    let project_root = Path::new(env!("CARGO_MANIFEST_DIR"))
+        .parent()
+        .ok_or("Could not find project root")?;
+
+    let tsx_path = project_root.join("node_modules").join(".bin").join("tsx");
+    let output = Command::new(tsx_path)
+        .current_dir(project_root)
+        .args(["agent/devRunner.ts", prompt.as_str()])
+        .output()
+        .map_err(|error| format!("Failed to run agent backend: {error}"))?;
+
+    if !output.status.success() {
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        return Err(format!("Agent backend failed: {stderr}"));
+    }
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    stdout
+        .lines()
+        .filter(|line| !line.trim().is_empty())
+        .map(|line| {
+            serde_json::from_str::<AgentEvent>(line)
+                .map_err(|error| format!("Failed to parse agent event: {error}"))
+        })
+        .collect()
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
