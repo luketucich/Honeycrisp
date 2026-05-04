@@ -1,73 +1,45 @@
-# React + TypeScript + Vite
+# Honeycrisp
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Honeycrisp is an early Mac desktop app experiment for generating native SwiftUI interfaces from prompts.
 
-Currently, two official plugins are available:
+The app is inspired by [Open Design](https://github.com/nexu-io/open-design), but the target is narrower: instead of exporting HTML, decks, PDFs, ZIPs, or Markdown, Honeycrisp focuses on polished mobile app UI and native Swift output.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Direction
 
-## React Compiler
+The current architecture is:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Tauri for the Mac app shell
+- React + TypeScript for the interface
+- Node + TypeScript for the local agent runtime
+- Claude Code CLI as the first real agent backend
+- SwiftUI as the generated output
+- Xcode and Simulator validation later
 
-## Expanding the ESLint configuration
+The first goal is not to build a giant design tool. It is to prove one high-quality loop:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```txt
+prompt -> Claude Code CLI -> SwiftUI files -> Xcode validation -> screenshot preview
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Current Status
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+As of Monday, May 4, 2026:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Tauri + React + TypeScript scaffold is running
+- Chat rail supports user, agent, status, and tool-style messages
+- React can call Tauri
+- Tauri can forward a prompt to a small Node/TypeScript runner
+- The current agent events are fake placeholders
+- The next milestone is replacing the fake runner with Claude Code CLI
+
+## Docs
+
+- [Architecture](docs/architecture.md)
+- [Roadmap](docs/roadmap.md)
+
+## Development
+
+```bash
+npm install
+npm run tauri:dev
 ```

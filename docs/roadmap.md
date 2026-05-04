@@ -1,10 +1,12 @@
 # Roadmap
 
-Last updated: Sunday, May 3, 2026
+Last updated: Monday, May 4, 2026
 
 ## Current Status
 
-Honeycrisp is in the early app scaffold phase. The initial documentation is complete, the Tauri desktop shell is running, the chat rail has typed agent/status/tool messages, and React can call a small Tauri command that returns fake agent events.
+Honeycrisp is in the early local-agent phase. The Tauri desktop shell is running, the chat rail has typed agent/status/tool messages, and React can call a small Tauri command that forwards through Node/TypeScript and returns fake agent events.
+
+The next backend target is Claude Code CLI first. Honeycrisp should detect the user's installed `claude` command, run it inside a local project workspace, parse its `stream-json` output, and translate that into Honeycrisp UI events.
 
 ## Phase 0: Planning
 
@@ -27,14 +29,19 @@ Honeycrisp is in the early app scaffold phase. The initial documentation is comp
 ## Phase 2: Local Agent Runtime
 
 - [x] Add Tauri agent bridge
-- [ ] Add Node/TypeScript backend
-- [ ] Forward Tauri command to Node backend
+- [x] Add minimal Node/TypeScript agent runner
+- [x] Forward Tauri command to Node runner
+- [ ] Detect local Claude Code CLI
+- [ ] Add Claude Code CLI engine
+- [ ] Parse Claude Code `stream-json` events
+- [ ] Stream agent events live to React
 - [ ] Add local project workspace
-- [ ] Add basic agent execution flow
+- [ ] Add first real prompt composer
 
 ## Phase 3: SwiftUI Generation
 
 - [ ] Create first SwiftUI skill
+- [ ] Compose Honeycrisp system prompt from skill, project context, and user request
 - [ ] Generate one native iOS screen
 - [ ] Add SwiftUI theme tokens
 - [ ] Add generated file manifest
